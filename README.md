@@ -82,3 +82,63 @@ Here is a visual overview of my `commandlinetools` folder:
 
 ![Command Line Tools folder](commandlinetools.png)
 
+### SDL3
+
+To use SDL3 in this project, you will need to **compile its files using the NDK**.  
+Therefore, you need to download the SDL3 library first.
+
+You can download the release files from the official SDL website:  
+[https://libsdl.org/release/](https://libsdl.org/release/)
+
+In this project, I used **SDL3-3.4.0**.  
+After downloading, **extract the archive** and explore its contents.  
+
+> Note: Inside the SDL3 folder, you will find an `Android.mk` file, which allows you to build the library using the NDK (we will get to this later).  
+
+Also, make sure to check the `android-project` folder inside SDL3.  
+The **Java source files** of SDL3 are located here:
+
+`SDL3-3.4.0/android-project/app/src/main/java/org/libsdl/app/`
+
+
+That's a long path! You will need these files as well.  
+In this project, I have placed them inside `android_build/java`, but you should always check the Java files of your own SDL3 version.
+
+---
+
+#### SDL HelloWorld Example
+
+For this project, I used a simple **SDL_helloworld** project.  
+You can get it from:  
+[https://github.com/libsdl-org/SDL_helloworld](https://github.com/libsdl-org/SDL_helloworld)
+
+- The **main.c** file is the original main program.  
+  I have slightly modified it and placed it in `jni/main.cpp` in this project, so it works with both C and C++.
+
+- In the SDL_helloworld project, under:
+
+`SDL_helloworld/app/src/main`
+
+
+you will need two items:  
+
+1. `res/` folder  
+2. `AndroidManifest.xml`  
+
+I have placed these files inside the `android_build` folder in this project.
+
+- Additionally, the following Java activity file is required:
+
+`SDL_helloworld/app/src/main/java/org/libsdl/helloworld/HelloWorldActivity.java`
+
+
+(Yes, the paths are long!)  
+I have included this file in `android_build/java` in this project.
+
+---
+
+#### Summary
+
+All the necessary SDL3 and SDL_helloworld files are included in this repository.  
+However, it is important that you **understand where they come from** and how they relate to your own SDL3 setup.
+
