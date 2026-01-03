@@ -9,10 +9,11 @@ In this repository, however, the entire process is performed **manually**, which
 
 The `build_libs.sh` script outlines all the steps required to build the project.  
 It is highly recommended to review **all the files in this repository** to fully understand how the system works and how you can adapt it to your own projects. Here are some screenshots showing the project on emulator:
+<div style="display: flex; gap: 10px;">
 
-![Screenshot 1](screenshot_1.png)
-
-![Screenshot 2](screenshot_2.png)
+  <img src="screenshot_1.png" alt="Screenshot 1" width="45%">
+  <img src="screenshot_2.png" alt="Screenshot 2" width="45%">
+</div>
 
 In the sections below, I will walk you through the process step by step.
 
