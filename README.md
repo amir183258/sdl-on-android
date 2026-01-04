@@ -399,6 +399,8 @@ echo "* Building is finished."
 Congratulations 🎉
 The final APK is now ready and can be tested on an Android emulator or device.
 
+---
+
 ## Final Words
 
 At the beginning of this journey, my goal was simply to run a **C/C++ project**
