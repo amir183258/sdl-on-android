@@ -232,3 +232,46 @@ cp -r ./libs/* ./android_build/lib/
 echo "* Library files are ready in android_build/lib/"
 ```
 ---
+
+## Section 4: Building Java Files
+
+In this step, the **Java source files** taken from the **SDL3 library** and the
+**SDL HelloWorld example** are compiled.
+
+The Java files are compiled using `javac`.  
+The output of this stage is a set of **`.class` files**, which are stored in
+the `android_build/classes/` directory.
+
+After that, the **`d8`** tool is used to generate the final **`.dex`** file.
+This file is placed in the `android_build/dex/` directory and will be
+packaged directly into the final APK.
+
+If you do **not modify the Java source files**, this step only needs to be
+performed **once** and can be safely skipped in subsequent builds.
+
+The following commands from the `build_libs.sh` script perform this process:
+
+```bash
+# after compiling .so files and copying them into lib,
+# we have to build java files. these java files are in
+# android-project in sdl3 release. copy them in ./android_build/java
+# you also need HelloWorldActivity.java as your main entry point.
+# we compile these files into .class files. then finally we compile them
+# into classes.dex file. we will use this file in our .apk file as the main
+# entry point. I couldn't compile using android-30 but android-33 was OK.
+# you have to compile these java files just once.
+
+# first we use javac to compile these files to .class files
+javac -classpath "$ANDROID_JAR" \
+      -d ./android_build/classes/ \
+      ./android_build/java/*.java
+echo "* Class files are ready from java files."
+
+# now we build .dex file. this is the final output from java files
+# mkdir -p android_build/dex
+d8 --lib "$ANDROID_JAR" \
+   --output ./android_build/dex \
+   $(find ./android_build/classes -name "*.class")
+echo "* Final .dex file is ready."
+```
+---
