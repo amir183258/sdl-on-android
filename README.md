@@ -398,3 +398,39 @@ echo "* Building is finished."
 
 Congratulations 🎉
 The final APK is now ready and can be tested on an Android emulator or device.
+
+## Final Words
+
+At the beginning of this journey, my goal was simply to run a **C/C++ project**
+on Android.
+
+I initially installed **Android Studio** and tried to create a C++ project
+using it. However, I had **no prior Android experience**, and the whole process
+felt overwhelming. Android Studio was slow to start, constantly downloading
+dependencies in the background, and during the build process it was never clear
+to me **what exactly was happening under the hood**.
+
+After that, I tried using **Gradle** directly. While it is a powerful build
+system, I still could not clearly understand:
+- what steps were executed internally,
+- why certain directory structures were mandatory,
+- and how all the pieces (JNI, Java, resources, native libraries) were actually
+  connected.
+
+Because of this, I decided to take a different approach and **build everything
+manually**.
+
+By manually compiling:
+- native **C/C++ code** with `ndk-build`,
+- **Java sources** with `javac` and `d8`,
+- **resources** with `aapt2`,
+- and finally packaging, aligning, and signing the APK myself,
+
+I was able to better understand **the process behind building an Android application**.
+
+This repository is the result of that learning process. If you have experience with Android, SDL, or native development and notice
+anything incorrect or suboptimal in this project, I would truly appreciate it
+if you shared your feedback or suggestions.
+
+Thank you for reading, and I hope this repository helps others who want to
+understand Android native development at a deeper level.
