@@ -297,3 +297,104 @@ aapt2 compile --dir ./android_build/res -o ./android_build/compiled_res.zip
 echo "* Final res is compiled to compiled_res.zip."
 ```
 ---
+
+## Section 6: Building the Final APK
+
+After completing the previous steps, we now have all required components:
+
+- Native **`.so`** libraries (C / C++)
+- Compiled **Java bytecode** (`classes.dex`)
+- Compiled **Android resources** (`compiled_res.zip`)
+
+In this section, all these components are combined to create the **final APK file**.
+
+---
+
+### Creating the Initial APK
+
+First, an initial APK container is created using `AndroidManifest.xml`,
+and the compiled resources are linked into it.
+
+```bash
+# now we make our initial .apk file
+aapt2 link \
+  -o ./android_build/app.ap_ \
+  --manifest ./android_build/AndroidManifest.xml \
+  -I "$ANDROID_JAR" \
+  ./android_build/compiled_res.zip \
+  --auto-add-overlay
+echo "* Initial apk file is ready."
+```
+
+### Adding Native Libraries (`.so` files)
+
+Next, the native libraries built from the C/C++ sources are added.
+These files must be placed inside a directory named `lib/` in the APK.
+
+```bash
+# now we add lib files (.so files)
+cd ./android_build/
+zip -r ./app.ap_ ./lib/
+echo "* Library files (.so files) added to initial apk file."
+cd ..
+```
+
+### Adding the DEX File
+
+The compiled Java bytecode (`classes.dex`) is then added to the APK.
+
+```bash
+# now we add .dex file to the initial apk file
+zip -u -j ./android_build/app.ap_ ./android_build/dex/classes.dex
+echo "* .dex file added to initial apk file."
+```
+
+### Aligning the APK
+
+The APK is aligned using `zipalign`.
+This step is required before signing and improves runtime performance.
+
+```bash
+# building final apk file using zipalign
+zipalign -f 4 ./android_build/app.ap_ ./build/app-aligned.apk
+echo "* Final apk file is ready to sign"
+```
+
+### Signing the APK
+
+The aligned APK is signed using the default Android debug keystore.
+
+```bash
+# sign the final apk file
+apksigner sign \
+  --ks ~/.android/debug.keystore \
+  --ks-pass pass:android \
+  --key-pass pass:android \
+  ./build/app-aligned.apk
+echo "* The final apk file is ready."
+```
+
+### Installing the APK
+
+Finally, the APK can be installed on an emulator or a real device.
+Make sure an emulator is already running or a device is connected.
+
+```bash
+# finally we install the apk file on our emulator or device
+adb install -r ./build/app-aligned.apk
+```
+
+### Cleanup
+
+After the build process is finished, the environment variables can be restored.
+
+```bash
+# after building we don't need to keep tools in PATH
+# so we remove them
+export PATH=$OLD_PATH
+
+echo "* Building is finished."
+```
+
+Congratulations 🎉
+The final APK is now ready and can be tested on an Android emulator or device.
