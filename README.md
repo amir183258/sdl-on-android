@@ -182,6 +182,7 @@ export PATH="$PATH:$HOME/Downloads/commandlinetools-linux-13114758_latest/platfo
 
 echo "* Your PATH variable is set and ready."
 ```
+---
 
 #### Notes
 
@@ -189,3 +190,45 @@ echo "* Your PATH variable is set and ready."
 - `NDK_MODULE_PATH` must point to the directory containing the SDL sources and your native application code.
 - The selected Android API level (for example, 33) must already be installed using `sdkmanager`.
 - After this step, all required Android and NDK tools will be globally available and the build process can continue smoothly.
+
+## Section 3: Building C and C++ Code
+
+In this step, the native **C and C++ source files** are built using the
+`ndk-build` tool.
+
+Both the project’s `main.cpp` file and the **SDL3 library** are compiled,
+and their corresponding **`.so` shared libraries** are generated.
+
+Building SDL3 may take some time, so please be patient.  
+However, this process is only required **once**. On subsequent builds,
+there is no need to rebuild SDL3 from scratch unless the source files change.
+
+After the build process completes, the generated files are placed into
+two directories:
+
+- `obj/` — intermediate build files
+- `libs/` — final shared libraries (`.so` files)
+
+Only the **`libs/`** directory is required for the next steps.
+
+Once the build is finished, the contents of the `libs/` directory are copied
+into `android_build/lib/`, which will later be packaged into the final APK.
+
+> ⚠️ **Important:**  
+> Inside the APK, the directory **must be named `lib`**.  
+> Android will not load native libraries from any other directory name.
+
+The following commands from the `build_libs.sh` script perform the build
+and copy operations:
+
+```bash
+# here are building stuff
+echo "* Running ndk-build - .so files are in libs/"
+ndk-build
+
+# after building libs we have to build apk and add libs and other stuff.
+# first we copy ./libs/ contents into ./android_build/lib
+cp -r ./libs/* ./android_build/lib/
+echo "* Library files are ready in android_build/lib/"
+```
+---
