@@ -142,3 +142,50 @@ I have included this file in `android_build/java` in this project.
 All the necessary SDL3 and SDL_helloworld files are included in this repository.  
 However, it is important that you **understand where they come from** and how they relate to your own SDL3 setup.
 
+## Section 2: Environment Variables Setup
+
+At this point, **all required tools and source files have been collected**.  
+From here on, you can follow the contents of the `build_libs.sh` script step by step.
+
+To simplify working with the **Android NDK** and **Android SDK** tools, several
+**environment variables** are defined at the beginning of this script.
+This allows all required tools to be accessed directly from the command line
+without repeatedly typing long paths.
+
+Below is the relevant part of the `build_libs.sh` script:
+
+```bash
+# here are your sdk and ndk tools
+
+# we will use ndk-build from this path
+export PATH="$PATH:$HOME/Downloads/android-ndk-r27d-linux/android-ndk-r27d"
+
+# this is your jni directory containing SDL and your main.c / main.cpp
+export NDK_MODULE_PATH="$PWD/jni"
+
+# this path is used for sdkmanager and avdmanager
+export PATH="$PATH:$HOME/Downloads/commandlinetools-linux-13114758_latest/cmdline-tools/latest/bin"
+
+# android api address; you may use different versions (30 or 33 for example)
+# you must install this API level using sdkmanager
+ANDROID_JAR="$HOME/Downloads/commandlinetools-linux-13114758_latest/platforms/android-33/android.jar"
+# ANDROID_JAR="$HOME/Downloads/commandlinetools-linux-13114758_latest/platforms/android-30/android.jar"
+
+# build-tools path; required for aapt, aapt2 and zipalign
+export PATH="$PATH:$HOME/Downloads/commandlinetools-linux-13114758_latest/build-tools/33.0.2"
+
+# platform-tools path; required for adb
+export PATH="$PATH:$HOME/Downloads/commandlinetools-linux-13114758_latest/platform-tools"
+
+# emulator path; used only to run an emulator (not required for building)
+# export PATH="$PATH:$HOME/Downloads/commandlinetools-linux-13114758_latest/emulator"
+
+echo "* Your PATH variable is set and ready."
+```
+
+#### Notes
+
+- You must update all paths according to your own SDK and NDK installation locations.
+- `NDK_MODULE_PATH` must point to the directory containing the SDL sources and your native application code.
+- The selected Android API level (for example, 33) must already be installed using `sdkmanager`.
+- After this step, all required Android and NDK tools will be globally available and the build process can continue smoothly.
