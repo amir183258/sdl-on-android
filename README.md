@@ -275,3 +275,25 @@ d8 --lib "$ANDROID_JAR" \
 echo "* Final .dex file is ready."
 ```
 ---
+
+## Section 5: Compiling Resources (res)
+
+In this step, the Android **resource files** located in the `res/` directory
+are compiled using the **`aapt2`** tool.
+
+The resource directory is taken from the SDL HelloWorld example and placed
+inside `android_build/res/`.  
+You are free to modify this directory and customize the resources for your
+own project. There is nothing special about this step.
+
+The output of this process is a compiled resource archive named
+`compiled_res.zip`, which will be used in the final APK packaging step.
+
+The following commands from the `build_libs.sh` script perform this operation:
+
+```bash
+# now we compile res folder using aapt2
+aapt2 compile --dir ./android_build/res -o ./android_build/compiled_res.zip
+echo "* Final res is compiled to compiled_res.zip."
+```
+---
